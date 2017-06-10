@@ -7,6 +7,7 @@ export class Kilmer {
   public isHappy = true;
   public isHungry = false;
   public isTired = false;
+  public age = 0;
 
   private hungerAcceleration = 1;
   private tiredAcceleration = 0.2;
@@ -20,6 +21,8 @@ export class Kilmer {
   private tiredLevel = 0
   private weight = 150;
 
+  private isAlive = true;
+
   constructor(
 
   ) {}
@@ -27,7 +30,8 @@ export class Kilmer {
 public runFrame() {
     this.hungerLevel += this.hungerAcceleration;
     this.tiredLevel += this.tiredAcceleration;
-    
+    this.age += 1;
+
     this.manageHunger();
     this.managerTiredness();
     this.manageHappines();
@@ -43,6 +47,10 @@ private manageHunger() {
         this.weight -= 1;
     } else if (this.hungerLevel < 0) {
         this.weight += 1;
+    }
+
+    if (this.hungerLevel > 600 || this.weight < 80 || this.weight > 1000 || this.hungerLevel < -1000) {
+        this.isAlive = false;
     }
 }
 
@@ -62,6 +70,10 @@ private managerTiredness() {
             this.wakeUp();
         }
     }
+
+    if (this.tiredLevel > 300) {
+        this.isAlive = false;
+    }
 }
 private manageHappines() {
     if (this.happinessLevel > 50) {
@@ -74,6 +86,11 @@ public feedKilmer() {
         return;
     }
     this.hungerLevel -= 25;
+}
+
+public feedKilmerUnhealthyFood() {
+    this.feedKilmer();
+    this.weight += 5;
 }
 
 public putKilmerToSleep() {
@@ -99,6 +116,11 @@ public petKilmer() {
 
 
   public getData() {
+      if (this.isAlive == false) {
+          return {
+              isDead: true
+          }
+      }
       return {
         isHappy: this.isHappy,
         isHungry: this.isHungry,
@@ -107,7 +129,8 @@ public petKilmer() {
         hungerLevel: this.hungerLevel,
         tiredLevel: this.tiredLevel,
         weight: this.weight,
-        isSleeping: this.isSleeping
+        isSleeping: this.isSleeping,
+        age: this.age
       };
   }
 

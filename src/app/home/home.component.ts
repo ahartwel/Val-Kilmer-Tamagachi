@@ -80,6 +80,12 @@ export class HomeComponent implements OnInit {
     this.updateState();
   }
 
+  public onFeedKilmerUnhealthy() {
+    console.log("feed kilmer unhealthy food");
+    this.kilmer.feedKilmerUnhealthyFood();
+    this.updateState();
+  }
+
   public putKilmerToSleep() {
     console.log("putting kilmer to sleep");
     this.kilmer.putKilmerToSleep();
